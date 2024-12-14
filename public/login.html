@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Se connecter à ChatGO!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Formulaire de connexion -->
+    <div id="login-container">
+        <h2>Choisissez une room pour discuter</h2>
+
+        <form id="login-form">
+            <label for="room">Nom de la room :</label>
+            <input type="text" id="room" name="room" placeholder="Entrez le nom de la room" required>
+            <button type="submit">Se connecter</button>
+        </form>
+    </div>
+
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        $(function() {
+            $('#login-form').submit(function(e) {
+                e.preventDefault();
+                const room = $('#room').val();
+                if (room) {
+                    window.location.href = `/index.html?room=${room}`;  // Redirige vers chat.html avec le paramètre room
+                }
+            });
+        });
+    </script>
+</body>
+</html>

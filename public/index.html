@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGO!</title>
+    <link rel="stylesheet" href="/style.css">  <!-- Lien vers ton fichier CSS -->
+</head>
+<body>
+
+    <div id="chat-container">
+        <div id="messages"></div>
+        <form id="message-form">
+            <input id="msg" autocomplete="off" placeholder="Écrivez un message" />
+            <button type="submit">Envoyer</button>
+        </form>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        $(function() {
+            var socket = io();
+            var username = prompt("Entrez votre nom d'utilisateur :");
+
+            // Envoi d'un message
+            $("form").submit(function(e) {
+                e.preventDefault();
+                var msg = $('#msg').val();
+                if (msg.trim() !== "") {
+                    socket.emit("chat message", msg, username); // Envoie du message avec le nom de l'utilisateur
+                    $('#msg').val('');
+                }
+                return false;
+            });
+
+            // Affichage des messages
+            socket.on('chat message', function(msg, sender) {
+                var messageClass = (sender === username) ? 'user' : 'other'; // Si le message est de l'utilisateur ou d'un autre
+                $('#messages').append(
+                    $("<div>").addClass("message " + messageClass).text(msg)
+                );
+                $('#messages').scrollTop($('#messages')[0].scrollHeight);  // Scroll automatique vers le bas
+            });
+        });
+    </script>
+
+</body>
+</html>
